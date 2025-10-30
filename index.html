@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pdx Moving Guru Reviews</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            height: auto;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', Arial, sans-serif;
+            background: #fff;
+            margin: 0;
+            padding: 0;
+            min-height: 0;
+        }
+
+        .reviews-widget {
+            max-width: 100%;
+            padding: 8px;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 10px;
+            padding: 8px 10px;
+            background: #fff;
+            border-radius: 6px;
+        }
+
+        .rating-info {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .name {
+            font-size: 15px;
+            font-weight: 600;
+            color: #202124;
+        }
+
+        .rating {
+            font-size: 14px;
+            font-weight: 600;
+            color: #202124;
+        }
+
+        .stars-top {
+            color: #fbbc04;
+            font-size: 15px;
+        }
+
+        .count {
+            font-size: 12px;
+            color: #5f6368;
+        }
+
+        .review-btn {
+            background: #1a73e8;
+            color: #fff;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .review-btn:hover {
+            background: #1765cc;
+        }
+
+        /* Carousel */
+        .carousel {
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .track {
+            display: flex;
+            gap: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        /* Cards */
+        .card {
+            background: #fff;
+            border: 1px solid #dadce0;
+            border-radius: 6px;
+            padding: 12px;
+            min-width: calc(33.333% - 6px);
+            flex-shrink: 0;
+        }
+
+        .card-top {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .av1 { background: #ea4335; }
+        .av2 { background: #4285f4; }
+        .av3 { background: #fbbc04; color: #202124 !important; }
+        .av4 { background: #34a853; }
+        .av5 { background: #ff6d01; }
+        .av6 { background: #46bdc6; }
+        .av7 { background: #7baaf7; }
+        .av8 { background: #f439a0; }
+
+        .info {
+            flex: 1;
+        }
+
+        .reviewer {
+            font-size: 13px;
+            font-weight: 600;
+            color: #202124;
+        }
+
+        .date {
+            font-size: 11px;
+            color: #70757a;
+        }
+
+        .stars-card {
+            color: #fbbc04;
+            font-size: 12px;
+            margin-bottom: 6px;
+        }
+
+        .text {
+            font-size: 12px;
+            line-height: 1.3;
+            color: #202124;
+            margin-bottom: 8px;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
+
+        .badge {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 10px;
+            color: #5f6368;
+            padding-top: 6px;
+            border-top: 1px solid #f1f3f4;
+        }
+
+        .g-icon {
+            width: 12px;
+            height: 12px;
+        }
+
+        /* Nav */
+        .nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #fff;
+            border: 1px solid #dadce0;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .nav:hover {
+            background: #f8f9fa;
+        }
+
+        .prev { left: -8px; }
+        .next { right: -8px; }
+
+        .nav svg {
+            width: 16px;
+            height: 16px;
+            fill: #5f6368;
+        }
+
+        /* Dots */
+        .dots {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            padding: 6px 0 0;
+        }
+
+        .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #dadce0;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+        }
+
+        .dot.active {
+            background: #1a73e8;
+        }
+
+        @media (max-width: 639px) {
+            .card { min-width: 100%; }
+        }
+
+        @media (min-width: 640px) and (max-width: 1023px) {
+            .card { min-width: calc(50% - 4px); }
+        }
+
+        @media (max-width: 639px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 6px;
+            }
+            .review-btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="reviews-widget" id="widget">
+        <div class="header">
+            <div class="rating-info">
+                <span class="name">Pdx Moving Guru</span>
+                <span class="rating">5.0</span>
+                <span class="stars-top">★★★★★</span>
+                <span class="count">(10)</span>
+            </div>
+            <a href="https://search.google.com/local/writereview?placeid=ChIJubeyDTF472cRG2J5bskTecI" target="_blank" class="review-btn">★ Leave a Review</a>
+        </div>
+
+        <div class="carousel">
+            <button class="nav prev" onclick="slide(-1)">
+                <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+            </button>
+
+            <div class="track" id="track">
+                <div class="card">
+                    <div class="card-top">
+                        <div class="avatar av1">C</div>
+                        <div class="info">
+                            <div class="reviewer">Courtney Polk</div>
+                            <div class="date">2 months ago</div>
+                        </div>
+                    </div>
+                    <div class="stars-card">★★★★★</div>
+                    <div class="text">Lucas and Drew were absolutely amazing! They packed up my truck quickly and safely handled all of my fragile items I was worried about.</div>
+                    <div class="badge">
+                        <svg class="g-icon" viewBox="0 0 24 24">
+                            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                        </svg>
+                        <span>View on Google</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-top">
+                        <div class="avatar av2">E</div>
+                        <div class="info">
+                            <div class="reviewer">Emily Wiese</div>
+                            <div class="date">5 months ago</div>
+                        </div>
+                    </div>
+                    <div class="stars-card">★★★★★</div>
+                    <div class="text">Lucas was incredible to work with. He was communicative, professional, and flexible. His team showed up on time and went above and beyond.</div>
+                    <div class="badge">
+                        <svg class="g-icon" viewBox="0 0 24 24">
+                            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                        </svg>
+                        <span>View on Google</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-top">
+                        <div class="avatar av3">K</div>
+                        <div class="info">
+                            <div class="reviewer">K</div>
+                            <div class="date">5 months ago</div>
+                        </div>
+                    </div>
+                    <div class="stars-card">★★★★★</div>
+                    <div class="text">Lucas and his team were incredible! Showed up perfectly on time and ready to get the job done right. I really appreciated the communication.</div>
+                    <div class="badge">
+                        <svg class="g-icon" viewBox="0 0 24 24">
+                            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                        </svg>
+                        <span>View on Google</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-top">
+                        <div class="avatar av4">M</div>
+                        <div class="info">
+                            <div class="reviewer">Matthew Warwick</div>
+                            <div class="date">7 months ago</div>
+                        </div>
+                    </div>
+                    <div class="stars-card">★★★★★</div>
+                    <div class="text">Our move went great! Lucas was transparent about everything, showed up early and took great care of my belongings.</div>
+                    <div class="badge">
+                        <svg class="g-icon" viewBox="0 0 24 24">
+                            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                        </svg>
+                        <span>View on Google</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-top">
+                        <div class="avatar av5">S</div>
+                        <div class="info">
+                            <div class="reviewer">S.L. Cash</div>
+                            <div class="date">7 months ago</div>
+                        </div>
+                    </div>
+                    <div class="stars-card">★★★★★</div>
+                    <div class="text">PDX Moving Gurus are the best! Being a veteran who moves frequently, I've experienced many movers. They arrived 15 mins early!</div>
+                    <div class="badge">
+                        <svg class="g-icon" viewBox="0 0 24 24">
+                            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                        </svg>
+                        <span>View on Google</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-top">
+                        <div class="avatar av6">T</div>
+                        <div class="info">
+                            <div class="reviewer">Tommy</div>
+                            <div class="date">7 months ago</div>
+                        </div>
+                    </div>
+                    <div class="stars-card">★★★★★</div>
+                    <div class="text">Helped me pack my whole apartment and travel down and up 4 flights of stairs, super helpful and reliable!</div>
+                    <div class="badge">
+                        <svg class="g-icon" viewBox="0 0 24 24">
+                            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                        </svg>
+                        <span>View on Google</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-top">
+                        <div class="avatar av7">B</div>
+                        <div class="info">
+                            <div class="reviewer">Barbie McCormack</div>
+                            <div class="date">11 months ago</div>
+                        </div>
+                    </div>
+                    <div class="stars-card">★★★★★</div>
+                    <div class="text">I would definitely recommend Pdx Moving Guru to everyone who is moving. Lucas and his crew were amazing!</div>
+                    <div class="badge">
+                        <svg class="g-icon" viewBox="0 0 24 24">
+                            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                        </svg>
+                        <span>View on Google</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-top">
+                        <div class="avatar av8">K</div>
+                        <div class="info">
+                            <div class="reviewer">Kaylob Woods</div>
+                            <div class="date">a year ago</div>
+                        </div>
+                    </div>
+                    <div class="stars-card">★★★★★</div>
+                    <div class="text">Best moving company I've used yet! Thank you for the great work guys!</div>
+                    <div class="badge">
+                        <svg class="g-icon" viewBox="0 0 24 24">
+                            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                        </svg>
+                        <span>View on Google</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-top">
+                        <div class="avatar av1">J</div>
+                        <div class="info">
+                            <div class="reviewer">Jessica M.</div>
+                            <div class="date">8 months ago</div>
+                        </div>
+                    </div>
+                    <div class="stars-card">★★★★★</div>
+                    <div class="text">Exceptional service! Professional, careful with our belongings, and completed the move faster than expected.</div>
+                    <div class="badge">
+                        <svg class="g-icon" viewBox="0 0 24 24">
+                            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                        </svg>
+                        <span>View on Google</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-top">
+                        <div class="avatar av2">R</div>
+                        <div class="info">
+                            <div class="reviewer">Robert C.</div>
+                            <div class="date">6 months ago</div>
+                        </div>
+                    </div>
+                    <div class="stars-card">★★★★★</div>
+                    <div class="text">Outstanding experience! Lucas and team were punctual, efficient, and took great care of everything!</div>
+                    <div class="badge">
+                        <svg class="g-icon" viewBox="0 0 24 24">
+                            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                        </svg>
+                        <span>View on Google</span>
+                    </div>
+                </div>
+            </div>
+
+            <button class="nav next" onclick="slide(1)">
+                <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+            </button>
+        </div>
+
+        <div class="dots" id="dots"></div>
+    </div>
+
+    <script>
+        let idx = 0;
+        let perView = window.innerWidth >= 1024 ? 3 : window.innerWidth >= 640 ? 2 : 1;
+        let total = Math.ceil(10 / perView);
+
+        function makeDots() {
+            const d = document.getElementById('dots');
+            d.innerHTML = '';
+            total = Math.ceil(10 / perView);
+            for (let i = 0; i < total; i++) {
+                const dot = document.createElement('button');
+                dot.className = 'dot' + (i === 0 ? ' active' : '');
+                dot.onclick = () => { idx = i; update(); };
+                d.appendChild(dot);
+            }
+        }
+
+        function update() {
+            const t = document.getElementById('track');
+            const cards = t.children;
+            const w = cards[0].offsetWidth + 8;
+            t.style.transform = `translateX(-${w * idx * perView}px)`;
+            Array.from(document.querySelectorAll('.dot')).forEach((d, i) => {
+                d.className = 'dot' + (i === idx ? ' active' : '');
+            });
+        }
+
+        function slide(dir) {
+            idx = (idx + dir + total) % total;
+            update();
+        }
+
+        window.addEventListener('resize', () => {
+            const newPer = window.innerWidth >= 1024 ? 3 : window.innerWidth >= 640 ? 2 : 1;
+            if (newPer !== perView) {
+                perView = newPer;
+                idx = 0;
+                makeDots();
+                update();
+            }
+        });
+
+        makeDots();
+        update();
+    </script>
+</body>
+</html>
